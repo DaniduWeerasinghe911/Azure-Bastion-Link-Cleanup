@@ -71,6 +71,8 @@ if ($azBastion.ProvisioningState -eq "Succeeded") {
                     if ($daysDifference.Days -gt 1) {
                         # Print details and potentially delete old links
                         Write-Output "Deleting the Shareable Link for the Virtual Machine: $($vm.Name)"
+                        $uri = "https://management.azure.com/subscriptions/$($PlatformSubscriptionId)/resourceGroups/$($azBastion.ResourceGroupName)/providers/Microsoft.Network/bastionHosts/$($azBastion.Name)/deleteShareableLinks?api-version=2023-02-01"                 
+                        $output = Invoke-WebRequest -Method Post -Uri $uri -Headers $header -Body (ConvertTo-Json $requestBody -Depth 10) 
                     }
                     else {
                         # The link is not older than 1 days
